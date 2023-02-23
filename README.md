@@ -17,3 +17,4 @@ Danny has shared with you 3 key datasets for this case study:
 - members
 
 You can inspect the entity relationship diagram and example data below.
+[Entity Relationship Diagram for Case Study 1](https://github.com/Data-Bishop/Danny-Ma-s-Case-Study-1---Danny-s-Diner/blob/master/assets/ERD-1.png?raw=true)
