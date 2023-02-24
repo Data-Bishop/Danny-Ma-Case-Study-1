@@ -97,3 +97,19 @@ JOIN dannys_diner.menu m USING(product_id)
 GROUP BY s.product_id, m.product_name
 ORDER BY num_of_orders DESC
 LIMIT 1;
+
+-- Question 5. Which item was the most popular for each customer?
+-- Solution to Question 5
+WITH popularity AS (
+SELECT s.customer_id,
+         m.product_id,
+		 m.product_name,
+		 COUNT(*) AS num_of_orders,
+		 RANK() OVER(PARTITION BY s.customer_id ORDER BY COUNT(*) DESC) AS popularity_rank
+FROM dannys_diner.sales AS s 
+JOIN dannys_diner.menu m USING(product_id)
+GROUP BY s.customer_id, m.product_name, m.product_id)
+
+SELECT customer_id, product_id, product_name, num_of_orders
+FROM popularity
+WHERE popularity_rank = 1;

@@ -146,6 +146,34 @@ Each of the following case study questions can be answered using a single SQL st
 ---
 
 5. Which item was the most popular for each customer?
+> The Query Result for the Solution is shown below:
+
+**Query #5**
+
+    WITH popularity AS (
+    SELECT s.customer_id,
+             m.product_id,
+    		 m.product_name,
+    		 COUNT(*) AS num_of_orders,
+    		 RANK() OVER(PARTITION BY s.customer_id ORDER BY COUNT(*) DESC) AS popularity_rank
+    FROM dannys_diner.sales AS s 
+    JOIN dannys_diner.menu m USING(product_id)
+    GROUP BY s.customer_id, m.product_name, m.product_id)
+    
+    SELECT customer_id, product_id, product_name, num_of_orders
+    FROM popularity
+    WHERE popularity_rank = 1;
+
+| customer_id | product_id | product_name | num_of_orders |
+| ----------- | ---------- | ------------ | ------------- |
+| A           | 3          | ramen        | 3             |
+| B           | 2          | curry        | 2             |
+| B           | 1          | sushi        | 2             |
+| B           | 3          | ramen        | 2             |
+| C           | 3          | ramen        | 3             |
+
+---
+
 6. Which item was purchased first by the customer after they became a member?
 7. Which item was purchased just before the customer became a member?
 8. What is the total items and amount spent for each member before they became a member?
