@@ -62,6 +62,7 @@ All datasets exist within the **dannys_diner database schema** - be sure to incl
 
 #### Case Study Questions
 Each of the following case study questions can be answered using a single SQL statement:
+**Note** - The SQL dialect used to write the solutions is _**POSTGRESQL**_.
 
 1. What is the total amount each customer spent at the restaurant?
 > The Query Result for the solution is shown below:
@@ -278,3 +279,26 @@ Each of the following case study questions can be answered using a single SQL st
 ---
 
 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+> The Query Result for the Solution is shown below:
+
+**Query #10**
+
+    SELECT s.customer_id, 
+            SUM(CASE
+               WHEN product_name = 'sushi' THEN 2*10*price
+               WHEN order_date BETWEEN join_date AND (order_date::date + INTERVAL '7 day') THEN 2*10*price
+               ELSE 1*10*price
+               END) AS total_points 
+    FROM dannys_diner.sales s
+    JOIN dannys_diner.members j USING(customer_id)
+    JOIN dannys_diner.menu m USING(product_id)
+    WHERE EXTRACT(MONTH FROM order_date) = 1
+    GROUP BY s.customer_id
+    ORDER BY s.customer_id;
+
+| customer_id | total_points |
+| ----------- | ------------ |
+| A           | 1370         |
+| B           | 940          |
+
+---
