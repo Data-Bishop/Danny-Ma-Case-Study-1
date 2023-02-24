@@ -64,7 +64,7 @@ VALUES
 -- Question 1. What is the total amount each customer spent at the restaurant?
 -- Solution for Question 1
 SELECT s.customer_id, 
-        CONCAT('$', SUM(m.price)) AS total_amount_spent 
+        SUM(m.price) AS total_amount_spent 
 FROM dannys_diner.sales s
 JOIN dannys_diner.menu m USING(product_id)
 GROUP BY s.customer_id
@@ -113,3 +113,21 @@ GROUP BY s.customer_id, m.product_name, m.product_id)
 SELECT customer_id, product_id, product_name, num_of_orders
 FROM popularity
 WHERE popularity_rank = 1;
+
+-- Question 6. Which item was purchased first by the customer after they became a member?
+-- Solution to Question 6
+WITH orders_after_join AS (
+SELECT s.customer_id, s.product_id, m.product_name,
+		s.order_date, j.join_date, 
+		RANK() OVER(PARTITION BY s.customer_id ORDER BY s.order_date) AS order_rank
+FROM dannys_diner.sales s
+JOIN dannys_diner.members j USING(customer_id)
+JOIN dannys_diner.menu m USING(product_id)
+WHERE j.join_date < s.order_date)
+
+SELECT customer_id, product_id,
+		product_name AS first_item_ordered,
+        order_date AS date_ordered 
+FROM orders_after_join
+WHERE order_rank = 1
+ORDER BY customer_id;
