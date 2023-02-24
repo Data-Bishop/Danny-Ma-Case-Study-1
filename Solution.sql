@@ -59,7 +59,8 @@ VALUES
   ('B', '2021-01-09');
 
 
--- QUESTIONS AND SOLUTIONS
+-- CASE STUDY QUESTIONS AND SOLUTIONS
+
 -- Question 1. What is the total amount each customer spent at the restaurant?
 -- Solution for Question 1
 SELECT s.customer_id, 
@@ -68,3 +69,9 @@ FROM dannys_diner.sales s
 JOIN dannys_diner.menu m USING(product_id)
 GROUP BY s.customer_id
 ORDER BY total_amount_spent DESC; 
+
+-- Question 2. How many days has each customer visited the restaurant?
+-- Solution for Question 2
+SELECT customer_id, COUNT(DISTINCT order_date) AS number_of_days_visited
+    FROM dannys_diner.sales
+    GROUP BY customer_id;

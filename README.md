@@ -84,6 +84,22 @@ Each of the following case study questions can be answered using a single SQL st
 ---
 
 2. How many days has each customer visited the restaurant?
+> The Query Result for the solution is shownn below:
+
+**Query #2**
+
+    SELECT customer_id, COUNT(DISTINCT order_date) AS number_of_days_visited
+    FROM dannys_diner.sales
+    GROUP BY customer_id;
+
+| customer_id | number_of_days_visited |
+| ----------- | ---------------------- |
+| A           | 4                      |
+| B           | 6                      |
+| C           | 2                      |
+
+---
+
 3. What was the first item from the menu purchased by each customer?
 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
 5. Which item was the most popular for each customer?
