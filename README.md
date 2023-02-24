@@ -101,6 +101,32 @@ Each of the following case study questions can be answered using a single SQL st
 ---
 
 3. What was the first item from the menu purchased by each customer?
+> The Query Result for the Solution is shown below:
+
+**Query #1**
+
+    SELECT DISTINCT s.customer_id, o.first_order_date, m.product_id, m.product_name
+    FROM dannys_diner.sales s
+    JOIN (SELECT customer_id, MIN(order_date) AS first_order_date
+            FROM dannys_diner.sales
+            GROUP BY customer_id) o
+      ON o.customer_id = s.customer_id
+      AND o.first_order_date = s.order_date
+    JOIN dannys_diner.menu m
+      ON m.product_id = s.product_id
+    ORDER BY s.customer_id;
+
+| customer_id | first_order_date         | product_id | product_name |
+| ----------- | ------------------------ | ---------- | ------------ |
+| A           | 2021-01-01T00:00:00.000Z | 1          | sushi        |
+| A           | 2021-01-01T00:00:00.000Z | 2          | curry        |
+| B           | 2021-01-01T00:00:00.000Z | 2          | curry        |
+| C           | 2021-01-01T00:00:00.000Z | 3          | ramen        |
+
+**Note** - A Common Table Expression can be used instead of the subquery in the FROM statement.
+
+---
+
 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
 5. Which item was the most popular for each customer?
 6. Which item was purchased first by the customer after they became a member?

@@ -75,3 +75,16 @@ ORDER BY total_amount_spent DESC;
 SELECT customer_id, COUNT(DISTINCT order_date) AS number_of_days_visited
     FROM dannys_diner.sales
     GROUP BY customer_id;
+
+-- Question 3.
+-- Solution for Question 3
+SELECT DISTINCT s.customer_id, o.first_order_date, m.product_id, m.product_name
+FROM dannys_diner.sales s
+JOIN (SELECT customer_id, MIN(order_date) AS first_order_date
+        FROM dannys_diner.sales
+        GROUP BY customer_id) o
+  ON o.customer_id = s.customer_id
+  AND o.first_order_date = s.order_date
+JOIN dannys_diner.menu m
+  ON m.product_id = s.product_id
+ORDER BY s.customer_id; 
