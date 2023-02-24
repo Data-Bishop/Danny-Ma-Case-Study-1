@@ -189,13 +189,13 @@ Each of the following case study questions can be answered using a single SQL st
     WHERE j.join_date < s.order_date)
     
     SELECT customer_id, product_id,
-    		product_name AS first_item_ordered,
+    		product_name AS item_ordered,
             order_date AS date_ordered 
     FROM orders_after_join
     WHERE order_rank = 1
     ORDER BY customer_id;
 
-| customer_id | product_id | first_item_ordered | date_ordered             |
+| customer_id | product_id | item_ordered       | date_ordered             |
 | ----------- | ---------- | ------------------ | ------------------------ |
 | A           | 3          | ramen              | 2021-01-10T00:00:00.000Z |
 | B           | 1          | sushi              | 2021-01-11T00:00:00.000Z |
@@ -203,6 +203,34 @@ Each of the following case study questions can be answered using a single SQL st
 ---
 
 7. Which item was purchased just before the customer became a member?
+>  The Query Result for the Solution is shown below:
+
+**Query #7**
+
+    WITH orders_before_join AS (
+    SELECT s.customer_id, s.product_id, m.product_name,
+    		s.order_date, j.join_date, 
+    		RANK() OVER(PARTITION BY s.customer_id ORDER BY s.order_date DESC) AS order_rank
+    FROM dannys_diner.sales s
+    JOIN dannys_diner.members j USING(customer_id)
+    JOIN dannys_diner.menu m USING(product_id)
+    WHERE j.join_date > s.order_date)
+    
+    SELECT customer_id, product_id,
+    		product_name AS item_ordered,
+            order_date AS date_ordered 
+    FROM orders_before_join
+    WHERE order_rank = 1
+    ORDER BY customer_id;
+
+| customer_id | product_id | item_ordered | date_ordered             |
+| ----------- | ---------- | ------------ | ------------------------ |
+| A           | 1          | sushi        | 2021-01-01T00:00:00.000Z |
+| A           | 2          | curry        | 2021-01-01T00:00:00.000Z |
+| B           | 1          | sushi        | 2021-01-04T00:00:00.000Z |
+
+---
+
 8. What is the total items and amount spent for each member before they became a member?
 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
