@@ -103,7 +103,7 @@ Each of the following case study questions can be answered using a single SQL st
 3. What was the first item from the menu purchased by each customer?
 > The Query Result for the Solution is shown below:
 
-**Query #1**
+**Query #3**
 
     SELECT DISTINCT s.customer_id, o.first_order_date, m.product_id, m.product_name
     FROM dannys_diner.sales s
@@ -128,6 +128,23 @@ Each of the following case study questions can be answered using a single SQL st
 ---
 
 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
+> The Query Result for the Solution is shown below:
+
+**Query #4**
+
+    SELECT s.product_id, m.product_name, COUNT(s.order_date) AS num_of_orders
+      FROM dannys_diner.sales s
+      JOIN dannys_diner.menu m USING(product_id)
+      GROUP BY s.product_id, m.product_name
+      ORDER BY num_of_orders DESC
+      LIMIT 1;
+
+| product_id | product_name | num_of_orders |
+| ---------- | ------------ | ------------- |
+| 3          | ramen        | 8             |
+
+---
+
 5. Which item was the most popular for each customer?
 6. Which item was purchased first by the customer after they became a member?
 7. Which item was purchased just before the customer became a member?
