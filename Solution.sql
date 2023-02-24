@@ -1,12 +1,14 @@
 CREATE SCHEMA dannys_diner;
 SET search_path = dannys_diner;
 
+-- CREATING THE sales TABLE 
 CREATE TABLE sales (
   "customer_id" VARCHAR(1),
   "order_date" DATE,
   "product_id" INTEGER
 );
 
+-- INSERTING VALUES INTO THE sales TABLE
 INSERT INTO sales
   ("customer_id", "order_date", "product_id")
 VALUES
@@ -27,12 +29,14 @@ VALUES
   ('C', '2021-01-07', '3');
  
 
+-- CREATING THE menu TABLE
 CREATE TABLE menu (
   "product_id" INTEGER,
   "product_name" VARCHAR(5),
   "price" INTEGER
 );
 
+-- INSERTING VALUES INTO THE menu TABLE
 INSERT INTO menu
   ("product_id", "product_name", "price")
 VALUES
@@ -41,13 +45,26 @@ VALUES
   ('3', 'ramen', '12');
   
 
+-- CREATING THE members TABLE
 CREATE TABLE members (
   "customer_id" VARCHAR(1),
   "join_date" DATE
 );
 
+-- INSERTING VALUES INTO THE members TABLE
 INSERT INTO members
   ("customer_id", "join_date")
 VALUES
   ('A', '2021-01-07'),
   ('B', '2021-01-09');
+
+
+-- QUESTIONS AND SOLUTIONS
+-- Question 1. What is the total amount each customer spent at the restaurant?
+-- Solution for Question 1
+SELECT s.customer_id, 
+        CONCAT('$', SUM(m.price)) AS total_amount_spent 
+FROM dannys_diner.sales s
+JOIN dannys_diner.menu m USING(product_id)
+GROUP BY s.customer_id
+ORDER BY total_amount_spent DESC; 

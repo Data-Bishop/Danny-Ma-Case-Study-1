@@ -64,6 +64,27 @@ All datasets exist within the **dannys_diner database schema** - be sure to incl
 Each of the following case study questions can be answered using a single SQL statement:
 
 1. What is the total amount each customer spent at the restaurant?
+> The Query Result for the solution is shown below:
+
+**Query #1**
+
+    SELECT s.customer_id, 
+            CONCAT('$', SUM(m.price)) AS total_amount_spent 
+    FROM dannys_diner.sales s
+    JOIN dannys_diner.menu m USING(product_id)
+    GROUP BY s.customer_id
+    ORDER BY total_amount_spent DESC;
+
+| customer_id | total_amount_spent |
+| ----------- | ------------------ |
+| A           | $76                |
+| B           | $74                |
+| C           | $36                |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
+
 2. How many days has each customer visited the restaurant?
 3. What was the first item from the menu purchased by each customer?
 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
