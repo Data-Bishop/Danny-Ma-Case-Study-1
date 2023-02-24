@@ -150,3 +150,15 @@ FROM orders_before_join
 WHERE order_rank = 1
 ORDER BY customer_id;
 
+-- Question 8. What is the total items and amount spent for each member before they became a member?
+-- Solution to Question 8
+SELECT s.customer_id, 
+        SUM(m.price) AS total_amount_spent,
+        COUNT(*) AS total_items_ordered
+FROM dannys_diner.sales s
+JOIN dannys_diner.members j 
+	ON j.customer_id = s.customer_id
+    AND j.join_date > s.order_date
+JOIN dannys_diner.menu m USING(product_id)
+GROUP BY s.customer_id
+ORDER BY s.customer_id;

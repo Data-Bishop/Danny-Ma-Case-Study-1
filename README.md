@@ -232,5 +232,27 @@ Each of the following case study questions can be answered using a single SQL st
 ---
 
 8. What is the total items and amount spent for each member before they became a member?
+> The Query Result for the Solution is shown below:
+
+**Query #8**
+
+    SELECT s.customer_id, 
+            SUM(m.price) AS total_amount_spent,
+            COUNT(*) AS total_items_ordered
+    FROM dannys_diner.sales s
+    JOIN dannys_diner.members j 
+    	ON j.customer_id = s.customer_id
+        AND j.join_date > s.order_date
+    JOIN dannys_diner.menu m USING(product_id)
+    GROUP BY s.customer_id
+    ORDER BY s.customer_id;
+
+| customer_id | total_amount_spent | total_items_ordered |
+| ----------- | ------------------ | ------------------- |
+| A           | 25                 | 2                   |
+| B           | 40                 | 3                   |
+
+---
+
 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
