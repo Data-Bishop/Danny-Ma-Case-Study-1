@@ -255,4 +255,26 @@ Each of the following case study questions can be answered using a single SQL st
 ---
 
 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+> The Query Result for the Solution is shown below:
+
+**Query #9**
+
+    SELECT s.customer_id, 
+            SUM(CASE
+               WHEN product_name = 'sushi' THEN 2*10*price
+               ELSE 1*10*price
+               END) AS total_points 
+    FROM dannys_diner.sales s
+    JOIN dannys_diner.menu m USING(product_id)
+    GROUP BY s.customer_id
+    ORDER BY s.customer_id;
+
+| customer_id | total_points |
+| ----------- | ------------ |
+| A           | 860          |
+| B           | 940          |
+| C           | 360          |
+
+---
+
 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?

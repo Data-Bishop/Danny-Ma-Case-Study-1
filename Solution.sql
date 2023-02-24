@@ -162,3 +162,16 @@ JOIN dannys_diner.members j
 JOIN dannys_diner.menu m USING(product_id)
 GROUP BY s.customer_id
 ORDER BY s.customer_id;
+
+-- Question 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier, 
+-- how many points would each customer have?
+-- Solution to Question 9
+SELECT s.customer_id, 
+        SUM(CASE
+           WHEN product_name = 'sushi' THEN 2*10*price
+           ELSE 1*10*price
+           END) AS total_points 
+FROM dannys_diner.sales s
+JOIN dannys_diner.menu m USING(product_id)
+GROUP BY s.customer_id
+ORDER BY s.customer_id;
