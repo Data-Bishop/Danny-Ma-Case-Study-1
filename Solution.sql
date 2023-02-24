@@ -88,3 +88,12 @@ JOIN (SELECT customer_id, MIN(order_date) AS first_order_date
 JOIN dannys_diner.menu m
   ON m.product_id = s.product_id
 ORDER BY s.customer_id; 
+
+-- Question 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
+-- Solution to Question 4
+SELECT s.product_id, m.product_name, COUNT(s.order_date) AS num_of_orders
+FROM dannys_diner.sales s
+JOIN dannys_diner.menu m USING(product_id)
+GROUP BY s.product_id, m.product_name
+ORDER BY num_of_orders DESC
+LIMIT 1;
