@@ -192,3 +192,6 @@ JOIN dannys_diner.menu m USING(product_id)
 WHERE EXTRACT(MONTH FROM order_date) = 1
 GROUP BY s.customer_id
 ORDER BY s.customer_id;
+
+
+-- BONUS QUESTIONS
