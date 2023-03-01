@@ -209,3 +209,7 @@ FROM dannys_diner.sales s
 	 LEFT JOIN dannys_diner.menu m USING(product_id)
 	 LEFT JOIN dannys_diner.members j USING(customer_id)
 );
+
+SELECT *
+FROM customers_member
+ORDER BY customer_id, order_date, product_name;
