@@ -347,3 +347,15 @@ Danny also requires further information about the ranking of customer products, 
 |C	|2021-01-01	|ramen	|12	|N	|null|
 |C	|2021-01-01	|ramen	|12	|N	|null|
 |C	|2021-01-07	|ramen	|12	|N	|null|
+
+> The Solution Query is below:
+   
+**Query #B2**
+
+    SELECT *,
+    	   CASE WHEN member = 'Y' THEN 
+           RANK() OVER(PARTITION BY customer_id, member ORDER BY order_date)
+           END AS ranking
+    FROM customers_member;
+
+---
