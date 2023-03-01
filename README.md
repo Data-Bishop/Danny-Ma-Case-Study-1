@@ -327,6 +327,31 @@ Recreate the following table output using the available data:
 |C	|2021-01-01	|ramen	|12	|N|
 |C	|2021-01-07	|ramen	|12	|N|
 
+> The Solution Query is below:
+
+**Query #B1-1**
+
+    CREATE TABLE IF NOT EXISTS customers_member AS
+    (SELECT s.customer_id,
+    	   s.order_date,
+           m.product_name,
+           m.price,
+           CASE WHEN s.order_date < j.join_date THEN 'N'
+    		    WHEN s.order_date >= j.join_date THEN 'Y'
+                ELSE 'N' 
+                END AS member
+    FROM dannys_diner.sales s
+    	 LEFT JOIN dannys_diner.menu m USING(product_id)
+    	 LEFT JOIN dannys_diner.members j USING(customer_id)
+    ORDER BY customer_id, order_date, product_name
+    );
+
+**Query #1-2**
+
+    SELECT *
+    FROM customers_member;
+
+---
 
 ### #2 Rank All The Things
 Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.
