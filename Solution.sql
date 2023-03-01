@@ -215,3 +215,8 @@ SELECT *
 FROM customers_member;
 
 -- #2 Rank All The Things
+SELECT *,
+	  CASE WHEN member = 'Y' 
+    THEN RANK() OVER(PARTITION BY customer_id, member ORDER BY order_date)
+    END AS ranking
+FROM customers_member;
