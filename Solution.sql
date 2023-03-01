@@ -195,3 +195,17 @@ ORDER BY s.customer_id;
 
 
 -- BONUS QUESTIONS
+-- #1 Join All The Things
+CREATE TABLE IF NOT EXISTS customers_member AS
+(SELECT s.customer_id,
+	   s.order_date,
+       m.product_name,
+       m.price,
+       CASE WHEN s.order_date < j.join_date THEN 'N'
+		    WHEN s.order_date >= j.join_date THEN 'Y'
+            ELSE 'N' 
+            END AS member
+FROM dannys_diner.sales s
+	 LEFT JOIN dannys_diner.menu m USING(product_id)
+	 LEFT JOIN dannys_diner.members j USING(customer_id)
+);
