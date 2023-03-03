@@ -134,11 +134,11 @@ Each of the following case study questions can be answered using a single SQL st
 **Query #4**
 
     SELECT s.product_id, m.product_name, COUNT(s.order_date) AS num_of_orders
-      FROM dannys_diner.sales s
-      JOIN dannys_diner.menu m USING(product_id)
-      GROUP BY s.product_id, m.product_name
-      ORDER BY num_of_orders DESC
-      LIMIT 1;
+    FROM dannys_diner.sales s
+    JOIN dannys_diner.menu m USING(product_id)
+    GROUP BY s.product_id, m.product_name
+    ORDER BY num_of_orders DESC
+    LIMIT 1;
 
 | product_id | product_name | num_of_orders |
 | ---------- | ------------ | ------------- |
